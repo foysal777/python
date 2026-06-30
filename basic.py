@@ -43,3 +43,11 @@ def say_hello(username):
 
 
 say_hello("honey")
+
+
+
+num1 = int(input("Enter first number:"))
+num2 =  int (input("Enter second number: "))
+
+# num1 = input("Enter first num :")
+# num2 = input ("Enter second num: ")
