@@ -1,5 +1,7 @@
 import random
 
+import time
+
 option = ["rock", "paper", "scissors"]
 
 print("welcome to the rock paper scissors game")
@@ -21,8 +23,9 @@ while True:
 
 
     computer_choice = random.choice(option)
+ 
     print("Computer choice is:", computer_choice)
-
+    time.sleep(5)
 
 
     if user_choice == computer_choice:
