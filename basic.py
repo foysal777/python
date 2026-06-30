@@ -35,3 +35,11 @@ print(fruits[2])
 
 for fruit in fruits:
     print("I eat" , fruit)
+
+
+
+def say_hello(username):
+    print("Hello " + username + "!")
+
+
+say_hello("honey")
