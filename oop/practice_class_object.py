@@ -13,8 +13,6 @@ question_bank  = [
 ]
 
 
-
-
 def run_quiz(questions):
     score = 0
     for q in questions:
