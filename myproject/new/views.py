@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
@@ -40,3 +41,42 @@ def voter_status(request, birth_year):
     return Response({'message': f'You are {age} years old. You are not eligible to vote.'})
 
 
+
+
+
+
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def password_checker_view(request):
+    if request.method == 'GET':
+        html_content = """
+        <form method="POST">
+            <label for="password">Enter Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Check Password</button>
+        </form>
+        """
+
+        return HttpResponse(html_content)
+    
+
+    elif request.method == 'POST':
+    
+        password = request.POST.get('password', '')
+
+
+        if not password:
+            return HttpResponse("Password is required.", status=400)
+        
+        has_uppercase = any(char.isupper() for char in password)
+        has_lowercase = any(char.islower() for char in password)
+        has_digit = any(char.isdigit() for char in password)        
+
+
+        if has_uppercase and has_lowercase and has_digit:
+            return HttpResponse("Password is strong.")
+        else:
+            return HttpResponse("Password is weak. It must contain at least one uppercase letter, one lowercase letter, and one digit.", status=400)
+         
