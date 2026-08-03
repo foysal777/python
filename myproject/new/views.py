@@ -47,8 +47,32 @@ def voter_status(request, birth_year):
 
 from django.views.decorators.csrf import csrf_exempt
 
+password_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password to validate'),
+    },
+    required=['password'],
+)
 
+
+@swagger_auto_schema(
+    method='get',
+    operation_description='Show password checker form',
+    responses={
+        200: openapi.Response(description='HTML form response'),
+    },
+)
+@swagger_auto_schema(
+    method='post',
+    request_body=password_schema,
+    responses={
+        200: openapi.Response(description='Password strength result'),
+        400: openapi.Response(description='Invalid password'),
+    },
+)
 @csrf_exempt
+@api_view(['GET', 'POST'])
 def password_checker_view(request):
     if request.method == 'GET':
         html_content = """
@@ -58,25 +82,20 @@ def password_checker_view(request):
             <button type="submit">Check Password</button>
         </form>
         """
+        return HttpResponse(html_content, content_type='text/html')
 
-        return HttpResponse(html_content)
-    
+    password = request.POST.get('password', '')
+    if not password:
+        return Response({'error': 'Password is required.'}, status=400)
 
-    elif request.method == 'POST':
-    
-        password = request.POST.get('password', '')
+    has_uppercase = any(char.isupper() for char in password)
+    has_lowercase = any(char.islower() for char in password)
+    has_digit = any(char.isdigit() for char in password)
 
-
-        if not password:
-            return HttpResponse("Password is required.", status=400)
-        
-        has_uppercase = any(char.isupper() for char in password)
-        has_lowercase = any(char.islower() for char in password)
-        has_digit = any(char.isdigit() for char in password)        
-
-
-        if has_uppercase and has_lowercase and has_digit:
-            return HttpResponse("Password is strong.")
-        else:
-            return HttpResponse("Password is weak. It must contain at least one uppercase letter, one lowercase letter, and one digit.", status=400)
+    if has_uppercase and has_lowercase and has_digit:
+        return Response({'message': 'Password is strong.'})
+    return Response(
+        {'message': 'Password is weak. It must contain at least one uppercase letter, one lowercase letter, and one digit.'},
+        status=400,
+    )
          
