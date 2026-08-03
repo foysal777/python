@@ -1,3 +1,6 @@
+from asyncio import sleep
+
+import time
 def number(*arg):
     for i in arg:
         print(i)
@@ -16,3 +19,17 @@ def student(**kwargs):
 
 student(name ="Jon" , age= 2333)
 
+
+
+def login():
+    print(("User logged in"))
+
+
+def wrapper():
+    print("Please wait for login...")
+    time.sleep(5)
+
+    login()
+    print("User logged in successfully")
+
+wrapper()
