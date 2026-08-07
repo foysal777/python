@@ -27,9 +27,15 @@ def login():
 
 def wrapper():
     print("Please wait for login...")
-    time.sleep(5)
+    time.sleep(1)
 
     login()
     print("User logged in successfully")
 
 wrapper()
+
+
+print(__name__)
+
+def demo():
+    return 10
